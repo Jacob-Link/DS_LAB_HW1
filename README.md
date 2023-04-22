@@ -1,6 +1,6 @@
 # **HW1 Data Science Lab - Course 094295**
 
-##The required final report should contain:
+## The required final report should contain:
 
 1. Executive summary
 
