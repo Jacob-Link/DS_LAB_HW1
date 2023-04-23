@@ -51,9 +51,9 @@ def label_balance(df):
     ones = sum(grouped['sepsis'])
     num_patients = len(grouped)
     print("Sepsis label balance in data:")
-    print(f"Patients with Sepsis: {round(100 * (ones / num_patients), 2)}% [{ones}/{num_patients:,}]")
+    print(f"Patients with Sepsis: {round(100 * (ones / num_patients), 2)}% [{ones:,}/{num_patients:,}]")
     print(
-        f"Patients with Sepsis: {round(100 * ((num_patients - ones) / num_patients), 2)} [{num_patients - ones}/{num_patients:,}]")
+        f"Patients with Sepsis: {round(100 * ((num_patients - ones) / num_patients), 2)} [{num_patients - ones:,}/{num_patients:,}]")
 
 
 def export(df, file_name, export=False):
