@@ -58,7 +58,7 @@ def label_balance(df):
 
 def export(df, file_name, export=False):
     if export:
-        df.to_csv(file_name, sep="\t")
+        df.to_csv(file_name, sep="\t", index=False)
 
 
 if __name__ == '__main__':
@@ -66,6 +66,3 @@ if __name__ == '__main__':
     export(df, file_name="all_data.tsv", export=False)
     hours_distribution(df)
     label_balance(df)
-
-
-    # testing change
