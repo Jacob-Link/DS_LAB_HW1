@@ -107,6 +107,7 @@ def get_relevant_rows(group):
 
 
 if __name__ == '__main__':
+    print()
     eda = False
     ml_train_data = True
 
