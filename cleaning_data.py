@@ -1,11 +1,26 @@
 import pandas as pd
 import numpy as np
 import os
+import gc
 
 TRAIN_PATH = r"C:\Users\Jacob Link\Desktop\Data_Science_Engineer\Year_3_Part_2\Lab in data science\HW\HW1\DS_LAB_HW1\data/train/"
 
 
-def load_data(load_tsv=False):
+def drop_ones_except_one(dfs_dict):
+    # return dict of keys: patient id,values: df ready to input to ml model
+    for patient, df in dfs_dict.items():
+        df = get_relevant_rows(df)
+        dfs_dict[patient] = df
+    return dfs_dict
+
+
+def load_train_data_for_ml_model():
+    dict_dfs = load_all_patients_for_ml_model()
+    train_dict_dfs = drop_ones_except_one(dict_dfs)
+    return train_dict_dfs
+
+
+def load_data_for_eda(load_tsv=False):
     if load_tsv:
         df = load_all_patients(load_tsv=True)
     else:
@@ -13,6 +28,19 @@ def load_data(load_tsv=False):
         df = concat_all_files(dfs)
 
     return df
+
+
+def load_all_patients_for_ml_model():
+    all_files = os.listdir(TRAIN_PATH)
+    df_dict = dict()
+    for i, f in enumerate(all_files):
+        print(i)
+        df = pd.read_csv(TRAIN_PATH + f"/{f}", sep="|")
+        id = f[:-4]
+        df_dict[id] = df
+
+    print(f">>> Total of {len(df_dict)} patients files loaded successfully")
+    return df_dict
 
 
 def load_all_patients(load_tsv=False):
@@ -61,8 +89,33 @@ def export(df, file_name, export=False):
         df.to_csv(file_name, sep="\t", index=False)
 
 
+def check_no_patient_label_only_one(df):
+    check_grouped = df.groupby('id').agg({'SepsisLabel': ['sum', 'count']}).reset_index()
+    check_df = check_grouped.loc[check_grouped["SepsisLabel"]["sum"] == check_grouped["SepsisLabel"]["count"]]
+    if len(check_df):
+        print(f"Number of patients diagnosed with Sepsis within 6 hours of entry to hospital: {len(check_df)}")
+    else:
+        print(f"No patient has all labels equal to 1")
+
+
+def get_relevant_rows(group):
+    # for each group will find the first row with label eq to 1 and return all rows including the first appearance of 1
+    if group["SepsisLabel"].sum():
+        return group.iloc[: group.loc[group["SepsisLabel"] == 1].index[0]]
+    else:
+        return group
+
+
 if __name__ == '__main__':
-    df = load_data(load_tsv=True)
-    export(df, file_name="all_data.tsv", export=False)
-    hours_distribution(df)
-    label_balance(df)
+    eda = False
+    ml_train_data = True
+
+    if eda:
+        df = load_data_for_eda(load_tsv=True)
+        export(df, file_name="all_data.tsv", export=False)
+        hours_distribution(df)
+        label_balance(df)
+        check_no_patient_label_only_one(df)
+
+    if ml_train_data:
+        train_dfs = load_train_data_for_ml_model()
