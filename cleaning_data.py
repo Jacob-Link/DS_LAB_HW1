@@ -1,10 +1,12 @@
 import pandas as pd
 import numpy as np
 import os
+from sklearn.linear_model import LogisticRegression
 
-TRAIN_PATH = r"C:\Users\Jacob Link\Desktop\Data_Science_Engineer\Year_3_Part_2\Lab in data science\HW\HW1\DS_LAB_HW1\data/train/"
 
+#TRAIN_PATH = r"C:\Users\Jacob Link\Desktop\Data_Science_Engineer\Year_3_Part_2\Lab in data science\HW\HW1\DS_LAB_HW1\data/train/"
 
+TRAIN_PATH = r"C:\Users\einam\Downloads\data\train"
 def load_data(load_tsv=False):
     if load_tsv:
         df = load_all_patients(load_tsv=True)
@@ -15,9 +17,9 @@ def load_data(load_tsv=False):
     return df
 
 
-def load_all_patients(load_tsv=False):
+def load_all_patients(filename= "all_data.tsv" ,load_tsv=False):
     if load_tsv:
-        df = pd.read_csv("all_data.tsv", sep="\t")
+        df = pd.read_csv(filename, sep="\t")
         print(f">>> Total of {len(df['id'].unique())} patients files loaded successfully (from tsv file)")
         return df
 
@@ -62,7 +64,8 @@ def export(df, file_name, export=False):
 
 
 if __name__ == '__main__':
-    df = load_data(load_tsv=True)
-    export(df, file_name="all_data.tsv", export=False)
+    df = load_data(load_tsv=False)
+    # print(df)
+    export(df, file_name="all_data.tsv", export=True)
     hours_distribution(df)
     label_balance(df)
