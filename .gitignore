@@ -3,3 +3,9 @@
 /test.py
 
 /all_data.tsv
+
+/venv
+
+.idea
+
+/__pycache__
