@@ -6,17 +6,18 @@ import gc
 TRAIN_PATH = r"C:\Users\Jacob Link\Desktop\Data_Science_Engineer\Year_3_Part_2\Lab in data science\HW\HW1\DS_LAB_HW1\data/train/"
 
 
-def drop_ones_except_one(dfs_dict):
-    # return dict of keys: patient id,values: df ready to input to ml model
+def modify_dfs(dfs_dict):
+    # modification: remove label column, remove all rows eq 1 except 1 for those labeled 1.
+    # return dict of keys: patient id,values: dict of label and df ready to input to ml model
     for patient, df in dfs_dict.items():
         df = get_relevant_rows(df)
-        dfs_dict[patient] = df
+        dfs_dict[patient] = {"label": sum(df["SepsisLabel"]), "df": df.drop(columns=["SepsisLabel"])}
     return dfs_dict
 
 
 def load_train_data_for_ml_model():
     dict_dfs = load_all_patients_for_ml_model()
-    train_dict_dfs = drop_ones_except_one(dict_dfs)
+    train_dict_dfs = modify_dfs(dict_dfs)
     return train_dict_dfs
 
 
@@ -34,7 +35,8 @@ def load_all_patients_for_ml_model():
     all_files = os.listdir(TRAIN_PATH)
     df_dict = dict()
     for i, f in enumerate(all_files):
-        print(i)
+        if (i + 1) % 500 == 0:
+            print(f">>> loaded [{i + 1:,}/{len(all_files):,}] patients data...")
         df = pd.read_csv(TRAIN_PATH + f"/{f}", sep="|")
         id = f[:-4]
         df_dict[id] = df
