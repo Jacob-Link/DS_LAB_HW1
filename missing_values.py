@@ -2,6 +2,7 @@ import numpy as np
 import pandas as pd
 from sklearn.impute import KNNImputer
 from sklearn.linear_model import LogisticRegression
+import pickle
 TRAIN_PATH = r"C:\Users\einam\Downloads\data\data\train"
 def load_all_patients(filename= "all_data.tsv" ,load_tsv=False):
     if load_tsv:
@@ -23,8 +24,13 @@ def load_all_patients(filename= "all_data.tsv" ,load_tsv=False):
 
 
 if __name__ == '__main__':
-    df = load_all_patients(filename="all_data.tsv", load_tsv=True)
-    imputer = KNNImputer(n_neighbors=2, weights="uniform")
-    print(df)
-    df = imputer.fit_transform(df.drop(['id'], axis=1).to_numpy())
-    print(df)
+    df = load_all_patients(filename="all_data.parquet", load_tsv=True)
+    for col in df.columns:
+        col_mean = df[col].mean()
+        df[col].fillna(col_mean, inplace=True)
+    df.to_parquet("df_mean_values.parquet")
+
+    # with open('all_data_for_training.pkl', 'rb') as fp:
+    #     all_data_for_training = pickle.load(fp)
+    #     print("all_data_for_training loaded successfully")
+    #     print(all_data_for_training['patient_0']["df"])

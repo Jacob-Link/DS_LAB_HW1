@@ -1,8 +1,9 @@
 import pandas as pd
 import numpy as np
 import os
-
-TRAIN_PATH = r"C:\Users\Jacob Link\Desktop\Data_Science_Engineer\Year_3_Part_2\Lab in data science\HW\HW1\DS_LAB_HW1\data/train/"
+import pickle
+# TRAIN_PATH = r"C:\Users\Jacob Link\Desktop\Data_Science_Engineer\Year_3_Part_2\Lab in data science\HW\HW1\DS_LAB_HW1\data/train/"
+TRAIN_PATH = r"C:\Users\einam\Downloads\data\train"
 
 
 def modify_dfs(dfs_dict):
@@ -121,3 +122,6 @@ if __name__ == '__main__':
 
     if ml_train_data:
         train_dfs = load_train_data_for_ml_model()
+    with open('all_data_for_training.pkl', 'wb') as fp:
+        pickle.dump(train_dfs, fp)
+        print('dictionary saved successfully to file')
