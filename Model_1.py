@@ -1,7 +1,8 @@
 import numpy as np
 import pandas as pd
 from sklearn.linear_model import LogisticRegression
-from cleaning_data import load_data
+# from cleaning_data import load_data
+
 from sklearn.metrics import f1_score
 
 #TRAIN_PATH = r"C:\Users\Jacob Link\Desktop\Data_Science_Engineer\Year_3_Part_2\Lab in data science\HW\HW1\DS_LAB_HW1\data/train/"
@@ -27,11 +28,12 @@ def load_all_patients(filename= "all_data.tsv" ,load_tsv=False):
 
 if __name__ == '__main__':
     df = load_all_patients(filename= "all_data.tsv" ,load_tsv=True)
+    print(df.columns)
 
     print(f"there are {len(df[df['SepsisLabel'] == 1]['id'].unique())} patients with sepsis")
 
-    # df.dropna(axis=1, how='any', inplace=True)
-    df = df.fillna(0)
+    df.dropna(axis=1, how='any', inplace=True)
+    # df = df.fillna(0)
     X, y = df.drop(["SepsisLabel", "id"], axis=1).to_numpy(), df["SepsisLabel"].to_numpy()
     # sepsis_patients = df[df["SepsisLabel"] == 1]
     print(f"there are {len(df[df['SepsisLabel'] == 1]['id'].unique())} patients with sepsis AFTER filling nan to 0")
@@ -41,3 +43,5 @@ if __name__ == '__main__':
     # print(clf.predict_proba(X))
     print(f"Accuracy : {clf.score(X, y)}")
     print(f"F1 score: {f1_score(y, predictions)}")
+    #0.004997795090401293
+    #

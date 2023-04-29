@@ -20,9 +20,6 @@ def load_all_patients(filename= "all_data.tsv" ,load_tsv=False):
         print(f">>> Total of {len(df_list)} patients files loaded successfully")
         return df_list
 
-def none_to_nan(df):
-    df = df.replace("None", np.nan)
-    return df
 
 
 if __name__ == '__main__':
