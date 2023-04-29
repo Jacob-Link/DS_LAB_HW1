@@ -4,6 +4,8 @@ import seaborn as sns
 import numpy as np
 from cleaning_data import load_data_for_eda
 
+# from scipy.stats import ttest_ind
+
 
 def boxplot_two_categories(df, value_col, category_col, x_label, y_label, title):
     # create plot
