@@ -13,3 +13,5 @@ def top_ten_non_missing(patient_dict):
     return patient_dict["df"][keep]
 
 
+def keep_all(patient_dict):
+    return patient_dict["df"]
