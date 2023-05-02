@@ -2,4 +2,5 @@ RandomForestClassifier(n_estimators=1000, random_state=0) --> 0.297 (top_ten_non
 RandomForestClassifier(n_estimators=1000, max_depth=None) --> 0.411 (keep all, std_mean, mean_impute)
 RandomForestClassifier(n_estimators=3000)-------------------> 0.441 (keep all, std_mean, mean_impute)
 RandomForestClassifier(n_estimators=1000)-------------------> 0.358 (top_ten_non_missing, std_mean, nan_to_num)
-RandomForestClassifier(n_estimators=1000)-------------------> 0.677 (keep_all, std_mean, nan_to_num) ******************
+RandomForestClassifier(n_estimators=1000)-------------------> 0.677 (keep_all, std_mean, nan_to_num)
+GradientBoostingClassifier(n_estimators=1000)---------------> 0.71 (keep_all, std_mean, nan_to_num)******************
