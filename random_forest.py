@@ -1,4 +1,5 @@
 import numpy as np
+import pickle
 
 from cleaning_data import load_train_data_for_ml_model, load_test_data
 from feature_selection import top_ten_non_missing, keep_all
@@ -32,11 +33,15 @@ def split_matrix(data):
     return X, y
 
 
-def create_rf_model(X, y):
+def create_rf_model(X, y, export_pkl=False, model_file_name=None):
     # return a fitted model
     clf = RandomForestClassifier(n_estimators=1000)
     clf.fit(X, y)
     print(">>> successfully created random forest classifier")
+    if export_pkl:
+        with open(model_file_name, 'wb') as f:
+            pickle.dump(clf, f)
+            print(f'>>> successfully exported {model_file_name}')
     return clf
 
 
@@ -85,6 +90,6 @@ if __name__ == '__main__':
     X_train, y_train = x_y_train(selection, transformation)
     X_test, y_test = x_y_test(selection, transformation)
 
-    random_forest_model = create_rf_model(X_train, y_train)
+    random_forest_model = create_rf_model(X_train, y_train, export_pkl=True, model_file_name="random_forest_0676.pkl")
     predictions = random_forest_model.predict(X_test)
     f1 = clac_f1(predictions, y_test)

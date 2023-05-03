@@ -1,4 +1,5 @@
 import numpy as np
+import pickle
 
 from cleaning_data import load_train_data_for_ml_model, load_test_data
 from feature_selection import top_ten_non_missing, keep_all
@@ -32,11 +33,15 @@ def split_matrix(data):
     return X, y
 
 
-def create_gradient_boosting_model(X, y):
+def create_gradient_boosting_model(X, y, export_pkl=False, model_file_name=None):
     # return a fitted model
     clf = GradientBoostingClassifier(n_estimators=1000)
     clf.fit(X, y)
     print(">>> successfully created random forest classifier")
+    if export_pkl:
+        with open(model_file_name, 'wb') as f:
+            pickle.dump(clf, f)
+            print(f'>>> successfully exported {model_file_name}')
     return clf
 
 
@@ -72,7 +77,7 @@ def x_y_test(selection, transformation):
     return X_test, y_test
 
 
-def clac_f1(predictions, y_test):
+def calc_f1(predictions, y_test):
     f1 = f1_score(y_test, predictions)
     print(f"F1 score: {round(f1, 3)}")
     return f1
@@ -85,6 +90,8 @@ if __name__ == '__main__':
     X_train, y_train = x_y_train(selection, transformation)
     X_test, y_test = x_y_test(selection, transformation)
 
-    gradient_boosting_model = create_gradient_boosting_model(X_train, y_train)
+
+    gradient_boosting_model = create_gradient_boosting_model(X_train, y_train, export_pkl=False,
+                                                             model_file_name="gradient_boosting_071.pkl")
     predictions = gradient_boosting_model.predict(X_test)
-    f1 = clac_f1(predictions, y_test)
+    f1 = calc_f1(predictions, y_test)
