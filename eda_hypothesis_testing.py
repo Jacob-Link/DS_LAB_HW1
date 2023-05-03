@@ -4,7 +4,6 @@ import seaborn as sns
 import numpy as np
 from cleaning_data import load_data_for_eda
 
-
 # from scipy.stats import ttest_ind
 
 
@@ -36,15 +35,17 @@ def get_avg_hr_per_patient(df):
     return grouped
 
 
-def ttest_func(df, value_col, category_column):
+def ttest_func(df, value_col, category_column, title):
     categories = list(df[category_column].unique())
-    group1 = df.loc[df[category_column] == categories[0]]
-    group2 = df.loc[df[category_column] == categories[1]]
+    group1 = list(df.loc[df[category_column] == categories[0]][value_col].dropna())
+    group2 = list(df.loc[df[category_column] == categories[1]][value_col].dropna())
 
-    # t_statistic, p_value = ttest_ind(group1, group2)
+    t_statistic, p_value = ttest_ind(group1, group2)
 
-    print(f"t-statistic: {t_statistic:.3f}")
-    print(f"p-value: {p_value:.3f}")
+    print(f"ttest results for: {title}")
+    print(f"t-statistic: {t_statistic:.10}")
+    print(f"p-value: {p_value:.10}")
+    print()
 
 
 def top_25_percent_avg(group, col_str):
