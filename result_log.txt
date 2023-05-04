@@ -4,3 +4,6 @@ RandomForestClassifier(n_estimators=3000)-------------------> 0.441 (keep all, s
 RandomForestClassifier(n_estimators=1000)-------------------> 0.358 (top_ten_non_missing, std_mean, nan_to_num)
 RandomForestClassifier(n_estimators=1000)-------------------> 0.676 (keep_all, std_mean, nan_to_num)
 GradientBoostingClassifier(n_estimators=1000)---------------> 0.71 (keep_all, std_mean, nan_to_num)******************
+LogisticRegression(max_iter=1000, solver="newton-cg")-------> 0.403 (keep_all, std_mean, nan_to_num) -- Benchmark
+LogisticRegression(max_iter=1000, solver="newton-cg")-------> 0.258 (top_ten_non_missing, std_mean, nan_to_num)
+AdaBoostClassifier(n_estimators=1000)-----------------------> 0.694 (keep_all, std_mean, nan_to_num)

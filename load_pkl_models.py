@@ -1,4 +1,4 @@
-from gradientBoosting import x_y_test, calc_f1
+from model_evaluation import x_y_test, calc_f1
 import pickle
 
 from feature_selection import top_ten_non_missing, keep_all
@@ -16,7 +16,9 @@ def load_model(file_name):
 
 if __name__ == '__main__':
     # model_name = "gradient_boosting_071.pkl"
-    model_name = "random_forest_0676.pkl"
+    # model_name = "random_forest_0676.pkl"
+    # model_name = "logistic_regression_0403.pkl"
+    model_name = "adaboost_0694.pkl"
     selection = keep_all
     transformation = std_mean_transform
 
