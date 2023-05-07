@@ -2,8 +2,12 @@ import pandas as pd
 import numpy as np
 import os
 import pickle
-# TRAIN_PATH = r"C:\Users\Jacob Link\Desktop\Data_Science_Engineer\Year_3_Part_2\Lab in data science\HW\HW1\DS_LAB_HW1\data/train/"
-TRAIN_PATH = r"C:\Users\einam\Downloads\data\test"
+
+TRAIN_PATH = r"C:\Users\Jacob Link\Desktop\Data_Science_Engineer\Year_3_Part_2\Lab in data science\HW\HW1\DS_LAB_HW1\data/train/"
+TEST_PATH = r"C:\Users\Jacob Link\Desktop\Data_Science_Engineer\Year_3_Part_2\Lab in data science\HW\HW1\DS_LAB_HW1\data/test/"
+
+
+# TRAIN_PATH = r"C:\Users\einam\Downloads\data\train"
 
 
 def modify_dfs(dfs_dict):
@@ -15,10 +19,35 @@ def modify_dfs(dfs_dict):
     return dfs_dict
 
 
-def load_train_data_for_ml_model():
-    dict_dfs = load_all_patients_for_ml_model()
-    train_dict_dfs = modify_dfs(dict_dfs)
+def load_train_data_for_ml_model(load_pickle=True):
+    if load_pickle:
+        with open('dict_ready_train.pkl', 'rb') as f:
+            train_dict_dfs = pickle.load(f)
+            print('>>> successfully loaded dict from pkl file')
+
+    else:
+        dict_dfs = load_all_patients_for_ml_model(TRAIN_PATH)
+        train_dict_dfs = modify_dfs(dict_dfs)
+        with open('dict_ready_train.pkl', 'wb') as f:
+            pickle.dump(train_dict_dfs, f)
+            print('>>> successfully saved dict as pickle')
     return train_dict_dfs
+
+
+def load_test_data(load_pickle=True):
+    if load_pickle:
+        with open('dict_ready_test.pkl', 'rb') as f:
+            test_dict_dfs = pickle.load(f)
+            print('>>> successfully loaded TEST dict from pkl file')
+
+    else:
+
+        dict_dfs = load_all_patients_for_ml_model(TEST_PATH)
+        test_dict_dfs = modify_dfs(dict_dfs)
+        with open('dict_ready_test.pkl', 'wb') as f:
+            pickle.dump(test_dict_dfs, f)
+            print('>>> successfully saved TEST dict as pickle')
+    return test_dict_dfs
 
 
 def load_data_for_eda(load_tsv=False):
@@ -31,24 +60,24 @@ def load_data_for_eda(load_tsv=False):
     return df
 
 
-def load_all_patients_for_ml_model():
-    all_files = os.listdir(TRAIN_PATH)
+def load_all_patients_for_ml_model(path):
+    all_files = os.listdir(path)
     df_dict = dict()
     for i, f in enumerate(all_files):
         if (i + 1) % 500 == 0:
             print(f">>> loaded [{i + 1:,}/{len(all_files):,}] patients data...")
-        df = pd.read_csv(TRAIN_PATH + f"/{f}", sep="|")
+        df = pd.read_csv(path + f"/{f}", sep="|")
         id = f[:-4]
         df_dict[id] = df
 
-    print(f">>> Total of {len(df_dict)} patients files loaded successfully")
+    print(f">>> Total of {len(df_dict):,} patients files loaded successfully")
     return df_dict
 
 
 def load_all_patients(load_tsv=False):
     if load_tsv:
         df = pd.read_csv("all_data.tsv", sep="\t")
-        print(f">>> Total of {len(df['id'].unique())} patients files loaded successfully (from tsv file)")
+        print(f">>> Total of {len(df['id'].unique()):,} patients files loaded successfully (from tsv file)")
         return df
 
     else:
@@ -59,7 +88,7 @@ def load_all_patients(load_tsv=False):
             df["id"] = f[:-4]  # add id column to each df
             df_list.append(df)
 
-        print(f">>> Total of {len(df_list)} patients files loaded successfully")
+        print(f">>> Total of {len(df_list):,} patients files loaded successfully")
         return df_list
 
 
@@ -103,15 +132,16 @@ def check_no_patient_label_only_one(df):
 def get_relevant_rows(group):
     # for each group will find the first row with label eq to 1 and return all rows including the first appearance of 1
     if group["SepsisLabel"].sum():
-        return group.iloc[: group.loc[group["SepsisLabel"] == 1].index[0]]
+        group = group.reset_index(drop=True)
+        return group.iloc[:group.loc[group["SepsisLabel"] == 1].index[0] + 1, :]
     else:
         return group
 
 
 if __name__ == '__main__':
-    print()
     eda = False
-    ml_train_data = True
+    ml_train_data = False
+    test_data = True
 
     if eda:
         df = load_data_for_eda(load_tsv=True)
@@ -121,7 +151,7 @@ if __name__ == '__main__':
         check_no_patient_label_only_one(df)
 
     if ml_train_data:
-        train_dfs = load_train_data_for_ml_model()
-    with open('all_data_for_training.pkl', 'wb') as fp:
-        pickle.dump(train_dfs, fp)
-        print('dictionary saved successfully to file')
+        train_dfs = load_train_data_for_ml_model(load_pickle=True)
+
+    if test_data:
+        test_data_dict = load_test_data(load_pickle=True)
