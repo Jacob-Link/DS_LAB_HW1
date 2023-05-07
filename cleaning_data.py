@@ -3,7 +3,7 @@ import numpy as np
 import os
 import pickle
 # TRAIN_PATH = r"C:\Users\Jacob Link\Desktop\Data_Science_Engineer\Year_3_Part_2\Lab in data science\HW\HW1\DS_LAB_HW1\data/train/"
-TRAIN_PATH = r"C:\Users\einam\Downloads\data\train"
+TRAIN_PATH = r"C:\Users\einam\Downloads\data\test"
 
 
 def modify_dfs(dfs_dict):

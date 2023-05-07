@@ -24,13 +24,13 @@ def load_all_patients(filename= "all_data.tsv" ,load_tsv=False):
 
 
 if __name__ == '__main__':
-    df = load_all_patients(filename="all_data.parquet", load_tsv=True)
-    for col in df.columns:
-        col_mean = df[col].mean()
-        df[col].fillna(col_mean, inplace=True)
-    df.to_parquet("df_mean_values.parquet")
+    # df = load_all_patients(filename="all_data.parquet", load_tsv=True)
+    # for col in df.columns:
+    #     col_mean = df[col].mean()
+    #     df[col].fillna(col_mean, inplace=True)
+    # df.to_parquet("df_mean_values.parquet")
 
-    # with open('all_data_for_training.pkl', 'rb') as fp:
-    #     all_data_for_training = pickle.load(fp)
-    #     print("all_data_for_training loaded successfully")
-    #     print(all_data_for_training['patient_0']["df"])
+    with open('all_data_for_training.pkl', 'rb') as fp:
+        all_data_for_training = pickle.load(fp)
+        print("all_data_for_training loaded successfully")
+        print(all_data_for_training['patient_0']["df"].shape)
