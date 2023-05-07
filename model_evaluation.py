@@ -10,6 +10,9 @@ from sklearn.ensemble import AdaBoostClassifier
 from sklearn.ensemble import GradientBoostingClassifier, RandomForestClassifier
 from sklearn.metrics import f1_score
 
+from xgboost import XGBClassifier
+from lightgbm import LGBMClassifier
+
 
 def commit_selection(train_dict, selection_func):
     for patient, patient_dict in train_dict.items():
@@ -115,6 +118,30 @@ def create_adaboost_model(X, y, export_pkl=False, model_file_name=None):
     return clf
 
 
+def create_xgboost_model(X, y, export_pkl=False, model_file_name=None):
+    # return a fitted model
+    clf = XGBClassifier(n_estimators=2000, tree_method='hist')
+    clf.fit(X, y)
+    print(">>> successfully created XGBoost classifier")
+    if export_pkl:
+        with open(model_file_name, 'wb') as f:
+            pickle.dump(clf, f)
+            print(f'>>> successfully exported {model_file_name}')
+    return clf
+
+
+def create_lgbm_model(X, y, export_pkl=False, model_file_name=None):
+    # return a fitted model
+    clf = LGBMClassifier(n_estimators=2000)
+    clf.fit(X, y)
+    print(">>> successfully created LightGBM classifier")
+    if export_pkl:
+        with open(model_file_name, 'wb') as f:
+            pickle.dump(clf, f)
+            print(f'>>> successfully exported {model_file_name}')
+    return clf
+
+
 def calc_f1(predictions, y_test):
     f1 = f1_score(y_test, predictions)
     print(f"F1 score: {round(f1, 3)}")
@@ -126,18 +153,31 @@ def get_model(model_name, X_train, y_train, export=False):
         random_forest_model = create_rf_model(X_train, y_train, export_pkl=export,
                                               model_file_name="random_forest_.pkl")
         return random_forest_model
+
     if model_name == "gb":
         gradient_boosting_model = create_gradient_boosting_model(X_train, y_train, export_pkl=export,
                                                                  model_file_name="gradient_boosting_.pkl")
         return gradient_boosting_model
+
     if model_name == "lr":
         logistic_regression_model = create_logistic_regression_model(X_train, y_train, export_pkl=export,
                                                                      model_file_name="logistic_regression_.pkl")
         return logistic_regression_model
+
     if model_name == "ada":
         adaboost_model = create_adaboost_model(X_train, y_train, export_pkl=export,
                                                model_file_name="adaboost_.pkl")
         return adaboost_model
+
+    if model_name == "xgb":
+        xgboost_model = create_xgboost_model(X_train, y_train, export_pkl=export,
+                                             model_file_name="xgboost_.pkl")
+        return xgboost_model
+
+    if model_name == "lgbm":
+        lgbm_model = create_lgbm_model(X_train, y_train, export_pkl=export,
+                                       model_file_name="lightGBM_.pkl")
+        return lgbm_model
 
 
 if __name__ == '__main__':
@@ -148,8 +188,8 @@ if __name__ == '__main__':
     X_train, y_train = x_y_train(selection, transformation)
     X_test, y_test = x_y_test(selection, transformation)
 
-    # options: "rf", "gb", "lr", "ada"
-    model = get_model("ada", X_train, y_train, export=False)
+    # options: "rf", "gb", "lr", "ada", "xgb", "lgbm"
+    model = get_model("lgbm", X_train, y_train, export=False)
 
     predictions = model.predict(X_test)
     f1 = calc_f1(predictions, y_test)
