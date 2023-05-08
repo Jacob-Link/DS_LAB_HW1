@@ -3,6 +3,8 @@ import pandas as pd
 from sklearn.impute import KNNImputer
 from sklearn.linear_model import LogisticRegression
 import pickle
+import os
+
 TRAIN_PATH = r"C:\Users\einam\Downloads\data\data\train"
 def load_all_patients(filename= "all_data.tsv" ,load_tsv=False):
     if load_tsv:

@@ -2,10 +2,16 @@ RandomForestClassifier(n_estimators=1000, random_state=0) --> 0.297 (top_ten_non
 RandomForestClassifier(n_estimators=1000, max_depth=None) --> 0.411 (keep all, std_mean, mean_impute)
 RandomForestClassifier(n_estimators=3000)-------------------> 0.441 (keep all, std_mean, mean_impute)
 RandomForestClassifier(n_estimators=1000)-------------------> 0.358 (top_ten_non_missing, std_mean, nan_to_num)
-RandomForestClassifier(n_estimators=1000)-------------------> 0.676 (keep_all, std_mean, nan_to_num)
-GradientBoostingClassifier(n_estimators=1000)---------------> 0.71 (keep_all, std_mean, nan_to_num)----------2----------
+...
+
 LogisticRegression(max_iter=1000, solver="newton-cg")-------> 0.403 (keep_all, std_mean, nan_to_num) -- Benchmark
 LogisticRegression(max_iter=1000, solver="newton-cg")-------> 0.258 (top_ten_non_missing, std_mean, nan_to_num)
+...
+GradientBoostingClassifier(n_estimators=1000)---------------> 0.71 (keep_all, std_mean, nan_to_num)
+
+# chosen after hyperparameter checks and different selection and imputation tests
+RandomForestClassifier(n_estimators=1000)-------------------> 0.676 (keep_all, std_mean, nan_to_num)
+GradientBoostingClassifier(n_estimators=2000)---------------> 0.711 (keep_all, std_mean, nan_to_num)---------2----------
 AdaBoostClassifier(n_estimators=1000)-----------------------> 0.694 (keep_all, std_mean, nan_to_num)
 XGBClassifier(n_estimators=2000, tree_method='hist')--------> 0.714 (keep_all, std_mean, nan_to_num)******** 1 *********
 LGBMClassifier(n_estimators=2000)---------------------------> 0.705 (keep_all, std_mean, nan_to_num)---------3----------
