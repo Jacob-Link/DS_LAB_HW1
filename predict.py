@@ -8,7 +8,9 @@
 import sys
 import pandas as pd
 import numpy as np
+import pickle
 import os
+from sklearn.metrics import f1_score
 
 
 def get_path():
@@ -46,7 +48,7 @@ def load_all_patients_for_ml_model(path):
         id = f[:-4]
         df_dict[id] = df
 
-    print(f">>> Total of {len(df_dict):,} patients files loaded successfully")
+    print(f">>> Total of {len(df_dict):,} patients files loaded successfully\n")
     return df_dict
 
 
@@ -77,6 +79,7 @@ def load_test_data(test_path):
 def commit_selection(train_dict, selection_func):
     for patient, patient_dict in train_dict.items():
         train_dict[patient]["df"] = selection_func(patient_dict)
+    print(">>> successfully committed feature selection")
     return train_dict
 
 
@@ -89,6 +92,8 @@ def commit_row_transformation(train_dict, transformation_func):
     data_rows = []
     for patient_dict in train_dict.values():
         data_rows.append(transformation_func(patient_dict))
+
+    print(">>> successfully committed feature transformation")
     return data_rows
 
 
@@ -100,6 +105,7 @@ def split_matrix(data):
 
 def commit_imputation(X_test):
     X_test = np.nan_to_num(X_test)
+    print(">>> successfully committed missing data imputation")
     return X_test
 
 
@@ -116,22 +122,43 @@ def x_y_test(path):
     X_test, y_test = split_matrix(test_matrix)
     X_test = commit_imputation(X_test)
 
-    return X_test, y_test
+    patient_id_list = list(data_dict.keys())
+
+    return X_test, y_test, patient_id_list
+
+
+def load_model(file_name):
+    with open(file_name, 'rb') as f:
+        model = pickle.load(f)
+        print(f'>>> successfully loaded {file_name} (model)')
+    return model
+
+
+def calc_f1(predictions, y_test):
+    f1 = f1_score(y_test, predictions)
+    print(f"\nF1 score: {round(f1, 3)}")
+    return f1
+
+
+def export_prediction_csv(patient_id_list, predictions):
+    prediction_df = pd.DataFrame({"id": patient_id_list, "prediction": predictions})
+
+    # sort id column by the patient number in the string
+    prediction_df["id_int"] = prediction_df["id"].apply(lambda x: int(x[8:]))
+    prediction_df.sort_values("id_int", inplace=True)
+    prediction_df.drop(columns=["id_int"], inplace=True)
+    prediction_df.to_csv("prediction.csv", index=False)
+
+    print("\n>>> successfully exported prediction.csv file as required")
 
 
 if __name__ == '__main__':
     test_path = get_path()
     model_name = "xgboost_0714.pkl"
 
-    X_test, y_test = x_y_test(test_path)
-    print("Loaded everything successfully")
-    input()
-
-    # model = load_model(model_name)
-    # # validation score
-    # predictions = model.predict(X_test)
-    # print("Validation score:")
-    # f1 = calc_f1(predictions, y_test)
-    # # export_prediction_csv()
-    #
-    # input()
+    X_test, y_test, patient_id_list = x_y_test(test_path)
+    model = load_model(model_name)
+    predictions = model.predict(X_test)
+    print(">>> successfully predicted over the test data")
+    f1 = calc_f1(predictions, y_test)
+    export_prediction_csv(patient_id_list, predictions)
