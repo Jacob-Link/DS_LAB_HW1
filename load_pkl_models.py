@@ -19,6 +19,7 @@ if __name__ == '__main__':
     # model_name = "random_forest_0676.pkl"
     # model_name = "logistic_regression_0403.pkl"
     # model_name = "adaboost_0694.pkl"
+    # model_name = "lightGBM_0705.pkl"
     model_name = "xgboost_0714.pkl"
 
     selection = keep_all
