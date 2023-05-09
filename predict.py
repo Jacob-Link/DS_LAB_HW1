@@ -1,10 +1,3 @@
-# import relevant libs
-# arg - path to test data
-# clean data - for the ml model (drop all redundent ones
-# transform the data
-# load pickle from env
-# predict on the test path data
-
 import sys
 import pandas as pd
 import numpy as np
