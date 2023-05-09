@@ -7,8 +7,7 @@ from sklearn.metrics import f1_score
 
 
 def get_path():
-    # test_path = sys.argv[1]
-    test_path = r"C:\Users\Jacob Link\Desktop\Data_Science_Engineer\Year_3_Part_2\Lab in data science\HW\HW1\DS_LAB_HW1\data/test/"
+    test_path = sys.argv[1]
     return test_path
 
 
