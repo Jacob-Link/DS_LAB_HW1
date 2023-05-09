@@ -27,6 +27,12 @@ def keep_all(patient_dict):
     return patient_dict["df"]
 
 
+def drop_high_correlated(patient_dict):
+    # above 0.75 and below -0.75 done during EDA
+    drop_cols = ["Hct", "Bilirubin_direct", "DBP", "HCO3", "SBP", "Unit1"]
+    return patient_dict["df"].drop(columns=drop_cols)
+
+
 def variance_threshold():
     pass
 
@@ -77,3 +83,4 @@ def hill_climbing_draft(X_train, y_train, X_test, y_test, model):
             break
 
     return current_features
+

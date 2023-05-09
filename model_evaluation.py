@@ -2,7 +2,7 @@ import numpy as np
 import pickle
 
 from cleaning_data import load_train_data_for_ml_model, load_test_data
-from feature_selection import top_ten_non_missing, keep_all, forward_sfs, chat_GPT_selection
+from feature_selection import top_ten_non_missing, keep_all, forward_sfs, chat_GPT_selection, drop_high_correlated
 from feature_transformation import std_mean_transform, impute_mean
 
 from sklearn.linear_model import LogisticRegression
@@ -172,7 +172,7 @@ def get_model(model_name, X_train, y_train, export=False):
 
     if model_name == "xgb":
         xgboost_model = create_xgboost_model(X_train, y_train, export_pkl=export,
-                                             model_file_name="xgboost_0714.pkl")
+                                             model_file_name="xgboost_.pkl")
         return xgboost_model
 
     if model_name == "lgbm":
@@ -197,13 +197,14 @@ def step_wise_forward(X_train, y_train, X_test, y_test):
 if __name__ == '__main__':
     # define selection and transformation at beginning
     selection = keep_all
+    # selection = drop_high_correlated
     transformation = std_mean_transform
 
     X_train, y_train = x_y_train(selection, transformation)
     X_test, y_test = x_y_test(selection, transformation)
 
     # options: "rf", "gb", "lr", "ada", "xgb", "lgbm"
-    model = get_model("lgbm", X_train, y_train, export=True)
+    model = get_model("xgb", X_train, y_train, export=False)
 
     # train score
     predictions = model.predict(X_train)
