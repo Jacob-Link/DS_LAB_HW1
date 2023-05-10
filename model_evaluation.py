@@ -189,7 +189,10 @@ def check_forward_stepwise(X_train, y_train):
 
 def step_wise_forward(X_train, y_train, X_test, y_test):
     bool_mask, new_X = check_forward_stepwise(X_train, y_train)
-    model = get_model("rf", new_X, y_train, export=False)
+    print("*****************************")
+    print(bool_mask)
+    print("*****************************")
+    model = get_model("xgb", new_X, y_train, export=False)
     predictions = model.predict(X_test[:, bool_mask])
     f1 = calc_f1(predictions, y_test)
 
@@ -197,7 +200,6 @@ def step_wise_forward(X_train, y_train, X_test, y_test):
 if __name__ == '__main__':
     # define selection and transformation at beginning
     selection = keep_all
-    # selection = drop_high_correlated
     transformation = std_mean_transform
 
     X_train, y_train = x_y_train(selection, transformation)
