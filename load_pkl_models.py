@@ -5,8 +5,6 @@ from feature_selection import top_ten_non_missing, keep_all
 from feature_transformation import std_mean_transform, impute_mean
 
 
-
-
 def load_model(file_name):
     with open(file_name, 'rb') as f:
         model = pickle.load(f)
@@ -38,4 +36,3 @@ if __name__ == '__main__':
     predictions = model.predict(X_test)
     print("Validation score:")
     f1 = calc_f1(predictions, y_test)
-

@@ -1,0 +1,90 @@
+>>> GROUP: AGE "30-59"
+    --- xgboost ---
+Male:
+F1 score: 0.727
+Precision score: 0.935
+Recall score: 0.594
+
+Female:
+F1 score: 0.689
+Precision score: 0.879
+Recall score: 0.567
+
+    --- adaboost ---
+Male:
+F1 score: 0.694
+Precision score: 0.847
+Recall score: 0.588
+
+Female:
+F1 score: 0.675
+Precision score: 0.836
+Recall score: 0.567
+
+    --- random_forest ---
+Male:
+F1 score: 0.664
+Precision score: 0.908
+Recall score: 0.524
+
+Female:
+F1 score: 0.638
+Precision score: 0.882
+Recall score: 0.5
+
+    --- LSTM ---
+Male:
+F1 score: 0.667
+Precision score: 0.821
+Recall score: 0.561
+
+Female:
+F1 score: 0.647
+Precision score: 0.741
+Recall score: 0.573
+
+---------------------------------------------------------------------------------------------------------------------
+>>> GROUP: "low_temp"
+    --- xgboost ---
+High_map:
+F1 score: 0.68
+Precision score: 0.847
+Recall score: 0.568
+
+Low_map:
+F1 score: 0.784
+Precision score: 0.934
+Recall score: 0.675
+
+    --- adaboost ---
+High_map:
+F1 score: 0.669
+Precision score: 0.787
+Recall score: 0.582
+
+Low_map:
+F1 score: 0.76
+Precision score: 0.876
+Recall score: 0.672
+
+    --- random_forest ---
+High_map:
+F1 score: 0.65
+Precision score: 0.814
+Recall score: 0.541
+
+Low_map:
+F1 score: 0.757
+Precision score: 0.961
+Recall score: 0.624
+
+    --- LSTM ---
+High_map:
+F1 score: 0.693
+Precision score: 0.787
+Recall score: 0.618
+
+Low_map:
+F1 score: 0.676
+Precision score: 0.791
+Recall score: 0.59

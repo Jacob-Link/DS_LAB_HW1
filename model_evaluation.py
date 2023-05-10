@@ -8,7 +8,7 @@ from feature_transformation import std_mean_transform, impute_mean
 from sklearn.linear_model import LogisticRegression
 from sklearn.ensemble import AdaBoostClassifier
 from sklearn.ensemble import GradientBoostingClassifier, RandomForestClassifier
-from sklearn.metrics import f1_score
+from sklearn.metrics import f1_score, precision_score, recall_score
 
 from xgboost import XGBClassifier
 from lightgbm import LGBMClassifier
@@ -70,9 +70,6 @@ def x_y_train(selection, transformation):
     train_matrix = np.array(data_after_transformation)
 
     X_train, y_train = split_matrix(train_matrix)
-
-    # TODO: the nans are from the transformation, when theres only 0 or 1 values in column transformed
-    # X_train = impute_mean(X_train, "X_train df")
     X_train = np.nan_to_num(X_train)
 
     return X_train, y_train
@@ -86,9 +83,6 @@ def x_y_test(selection, transformation):
     test_matrix = np.array(data_after_transformation)
 
     X_test, y_test = split_matrix(test_matrix)
-
-    # TODO: the nans are from the transformation, when theres only 0 or 1 values in column transformed
-    # X_test = impute_mean(X_test, "X_train df")
     X_test = np.nan_to_num(X_test)
 
     return X_test, y_test
@@ -147,6 +141,18 @@ def calc_f1(predictions, y_test):
     f1 = f1_score(y_test, predictions)
     print(f"F1 score: {round(f1, 3)}")
     return f1
+
+
+def calc_precision(predictions, y_test):
+    precision = precision_score(y_test, predictions)
+    print(f"Precision score: {round(precision, 3)}")
+    return precision
+
+
+def calc_recall(predictions, y_test):
+    recall = recall_score(y_test, predictions)
+    print(f"Recall score: {round(recall, 3)}")
+    return recall
 
 
 def get_model(model_name, X_train, y_train, export=False):
