@@ -149,5 +149,5 @@ def run_temp_map():
 
 
 if __name__ == '__main__':
-    # run_age_gender()
+    run_age_gender()
     run_temp_map()
