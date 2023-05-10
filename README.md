@@ -5,18 +5,18 @@
 1. Executive Summary
 2. Literature Review
 3. Exploratory Data Analysis
-   a. Describing available features in the dataset
-   b. Inspecting features distribution
-   c. Comparative analysis between features
+   1. Describing available features in the dataset
+   2. Inspecting features distribution
+   3. Comparative analysis between features
       1. Highly correlated raw features
       2. Hypothesis testing
-   d. Handling missing data
+   4. Handling missing data
 4. Feature Engineering
-   a. Feature Selection
-   b. Feature Transformation
+   1. Feature Selection
+   2. Feature Transformation
 5. Prediction
-   a. Report
-   b. Post Analysis of Chosen Models
+   1. Report
+   2. Post Analysis of Chosen Models
       1. Performance on Subsets
       2. Interprebility 
 6. Summary and Discussion
