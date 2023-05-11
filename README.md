@@ -1,6 +1,6 @@
 # **HW1 Data Science Lab - Course 094295**
 
-## Our final report contains:
+## Our final report contains (Report.pdf in repo):
 
 1. **Executive Summary**
 2. **Literature Review**
